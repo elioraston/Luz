@@ -25,7 +25,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 320px 1fr;
@@ -63,15 +63,16 @@
 
         .sidebar-tabs {
             display: flex;
-            gap: 4px;
+            gap: 2px;
             border-bottom: 2px solid var(--border-color);
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
             background: #eee;
             border: none;
-            padding: 8px 10px;
+            padding: 8px 8px;
             font-size: 0.85em;
             cursor: pointer;
             font-weight: bold;
@@ -146,7 +147,7 @@
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
             margin-bottom: 10px;
             display: grid;
-            grid-template-columns: 1fr 200px;
+            grid-template-columns: 1fr 220px;
             gap: 12px;
             align-items: center;
         }
@@ -155,12 +156,22 @@
 
         .location-card {
             background: #f8f9fa;
-            border-right: 4px solid var(--primary-color);
+            border-right: 5px solid var(--primary-color);
             padding: 6px 10px;
             border-radius: 4px;
-            min-width: 140px;
+            min-width: 150px;
             font-size: 0.9em;
         }
+
+        .location-card-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .location-card-detail { font-size: 0.85em; color: #444; }
 
         .total-box {
             background: #eef7ee;
@@ -194,7 +205,7 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 5px;
-            min-height: 80px;
+            min-height: 85px;
             padding: 4px;
             display: flex;
             flex-direction: column;
@@ -202,7 +213,7 @@
             cursor: pointer;
         }
 
-        .day-number { font-weight: bold; font-size: 0.9em; }
+        .day-number { font-weight: bold; font-size: 0.9em; margin-bottom: 2px; }
 
         .day-content { font-size: 0.75em; display: flex; flex-direction: column; gap: 2px; }
 
@@ -210,13 +221,30 @@
             padding: 2px 4px;
             border-radius: 3px;
             color: #fff;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
             font-size: 0.8em;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        .tag-holiday { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; font-weight: bold; }
+        .tag-holiday {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            font-weight: bold;
+            text-shadow: none;
+        }
+
+        .note-text {
+            color: #555;
+            font-style: italic;
+            font-size: 0.75em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         .modal {
             display: none;
@@ -232,7 +260,7 @@
             background: white;
             padding: 16px;
             border-radius: 8px;
-            width: 340px;
+            width: 350px;
             max-width: 90%;
         }
 
@@ -290,11 +318,11 @@
                     <input type="hidden" id="editActId">
                     <div class="form-group">
                         <label>שם החוג</label>
-                        <input type="text" id="actName" required>
+                        <input type="text" id="actName" required placeholder="חוג חיות">
                     </div>
                     <div class="form-group">
                         <label>מיקום החוג</label>
-                        <input type="text" id="actLocation" required>
+                        <input type="text" id="actLocation" required placeholder="Sweetnest">
                     </div>
                     <div class="form-group">
                         <label>סוג תמחור</label>
@@ -332,7 +360,7 @@
 
         <div class="card">
             <label>מקרא מיקומים:</label><div id="locationLegend" class="legend"></div>
-            <label style="margin-top:6px;">מקרא מטפלים:</label><div id="caregiverLegend" class="legend"></div>
+            <label style="margin-top:8px;">מקרא מטפלים:</label><div id="caregiverLegend" class="legend"></div>
         </div>
     </div>
 
@@ -343,7 +371,7 @@
                 <div id="locationsSummaryGrid" class="locations-summary-grid"></div>
             </div>
             <div class="total-box">
-                <div>סה"כ לתשלום:</div>
+                <div>סה"כ לתשלום בחודש:</div>
                 <div id="totalCost" class="total-box-amount">0 ₪</div>
             </div>
         </div>
@@ -362,10 +390,10 @@
     <div class="modal-content">
         <h3 id="modalDateTitle">עריכת יום</h3>
         <div class="form-group">
-            <label>מטפל/ת:</label>
-            <select id="modalCaregiver"><option value="">-- ללא --</option></select>
+            <label>דמות מטפלת:</label>
+            <select id="modalCaregiver"><option value="">-- ללא דמות מטפלת --</option></select>
             <div class="recurrence-box">
-                <strong>תדירות:</strong>
+                <strong>תדירות למטפל/ת:</strong>
                 <div class="radio-group">
                     <label><input type="radio" name="caregiverRecurrence" value="single" checked> יום זה בלבד</label>
                     <label><input type="radio" name="caregiverRecurrence" value="monthly"> לכל ימי <span class="day-name-label"></span></label>
@@ -374,9 +402,9 @@
         </div>
         <div class="form-group">
             <label>חוג:</label>
-            <select id="modalActivity"><option value="">-- ללא --</option></select>
+            <select id="modalActivity"><option value="">-- ללא חוג --</option></select>
             <div class="recurrence-box">
-                <strong>תדירות:</strong>
+                <strong>תדירות לחוג:</strong>
                 <div class="radio-group">
                     <label><input type="radio" name="activityRecurrence" value="single" checked> יום זה בלבד</label>
                     <label><input type="radio" name="activityRecurrence" value="monthly"> לכל ימי <span class="day-name-label"></span></label>
@@ -385,7 +413,7 @@
         </div>
         <div class="form-group">
             <label>הערות:</label>
-            <textarea id="modalNotes" rows="2"></textarea>
+            <textarea id="modalNotes" rows="2" placeholder="הערות ליום זה..."></textarea>
         </div>
         <div style="display:flex; gap:8px;">
             <button onclick="saveDayData()">שמור</button>
@@ -396,27 +424,68 @@
 
 <script>
     var jewishHolidaysMap = {
-        "2025-04-12": "ערב פסח", "2025-04-13": "פסח", "2025-04-19": "שביעי של פסח",
-        "2025-04-30": "יום העצמאות", "2025-05-16": "ל\"ג בעומר", "2025-06-02": "שבועות",
-        "2025-09-22": "ערב ראש השנה", "2025-09-23": "ראש השנה", "2025-10-01": "ערב יום כיפור",
-        "2025-10-02": "יום כיפור", "2025-10-06": "ערב סוכות", "2025-10-07": "סוכות",
-        "2026-03-02": "ערב פורים", "2026-03-03": "פורים", "2026-04-01": "ערב פסח", "2026-04-02": "פסח",
-        "2026-04-22": "יום העצמאות", "2026-05-05": "ל\"ג בעומר", "2026-05-22": "שבועות",
-        "2026-09-11": "ערב ראש השנה", "2026-09-12": "ראש השנה", "2026-09-20": "ערב יום כיפור",
-        "2026-09-21": "יום כיפור", "2026-09-25": "ערב סוכות", "2026-09-26": "סוכות"
+        // --- 2025 ---
+        "2025-03-13": "ערב פורים", "2025-03-14": "פורים", "2025-03-15": "שושן פורים",
+        "2025-04-12": "ערב פסח", "2025-04-13": "פסח (חג)", "2025-04-14": "חול המועד פסח",
+        "2025-04-15": "חול המועד פסח", "2025-04-16": "חול המועד פסח", "2025-04-17": "חול המועד פסח",
+        "2025-04-18": "ערב שביעי של פסח", "2025-04-19": "שביעי של פסח",
+        "2025-04-24": "יום השואה", "2025-04-29": "יום הזיכרון", "2025-04-30": "יום העצמאות",
+        "2025-05-16": "ל\"ג בעומר", "2025-05-26": "יום ירושלים", "2025-06-01": "ערב שבועות", "2025-06-02": "שבועות",
+        "2025-09-22": "ערב ראש השנה", "2025-09-23": "ראש השנה א'", "2025-09-24": "ראש השנה ב'", "2025-09-25": "צום גדליה",
+        "2025-10-01": "ערב יום כיפור", "2025-10-02": "יום כיפור",
+        "2025-10-06": "ערב סוכות", "2025-10-07": "סוכות (חג)", "2025-10-08": "חול המועד סוכות",
+        "2025-10-09": "חול המועד סוכות", "2025-10-10": "חול המועד סוכות", "2025-10-11": "חול המועד סוכות",
+        "2025-10-12": "הושענא רבה", "2025-10-13": "שמחת תורה / שמיני עצרת",
+        "2025-12-15": "חנוכה (נר 1)", "2025-12-16": "חנוכה (נר 2)", "2025-12-17": "חנוכה (נר 3)",
+        "2025-12-18": "חנוכה (נר 4)", "2025-12-19": "חנוכה (נר 5)", "2025-12-20": "חנוכה (נר 6)",
+        "2025-12-21": "חנוכה (נר 7)", "2025-12-22": "חנוכה (נר 8)",
+
+        // --- 2026 ---
+        "2026-03-02": "ערב פורים", "2026-03-03": "פורים", "2026-03-04": "שושן פורים",
+        "2026-04-01": "ערב פסח", "2026-04-02": "פסח (חג)", "2026-04-03": "חול המועד פסח",
+        "2026-04-04": "חול המועד פסח", "2026-04-05": "חול המועד פסח", "2026-04-06": "חול המועד פסח",
+        "2026-04-07": "ערב שביעי של פסח", "2026-04-08": "שביעי של פסח",
+        "2026-04-14": "יום השואה", "2026-04-21": "יום הזיכרון", "2026-04-22": "יום העצמאות",
+        "2026-05-05": "ל\"ג בעומר", "2026-05-15": "יום ירושלים", "2026-05-21": "ערב שבועות", "2026-05-22": "שבועות",
+        "2026-09-11": "ערב ראש השנה", "2026-09-12": "ראש השנה א'", "2026-09-13": "ראש השנה ב'", "2026-09-14": "צום גדליה",
+        "2026-09-20": "ערב יום כיפור", "2026-09-21": "יום כיפור",
+        "2026-09-25": "ערב סוכות", "2026-09-26": "סוכות (חג)", "2026-09-27": "חול המועד סוכות",
+        "2026-09-28": "חול המועד סוכות", "2026-09-29": "חול המועד סוכות", "2026-09-30": "חול המועד סוכות",
+        "2026-10-01": "הושענא רבה", "2026-10-02": "שמחת תורה / שמיני עצרת",
+        "2026-12-05": "חנוכה (נר 1)", "2026-12-06": "חנוכה (נר 2)", "2026-12-07": "חנוכה (נר 3)",
+        "2026-12-08": "חנוכה (נר 4)", "2026-12-09": "חנוכה (נר 5)", "2026-12-10": "חנוכה (נר 6)",
+        "2026-12-11": "חנוכה (נר 7)", "2026-12-12": "חנוכה (נר 8)"
     };
 
     var monthsHebrew = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
     var daysHebrewName = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
-    var colors = ['#e57373', '#ba68c8', '#64b5f6', '#4db6ac', '#81c784', '#ffd54f', '#ff8a65'];
+    var palette = ['#e57373', '#ba68c8', '#64b5f6', '#4db6ac', '#81c784', '#ffd54f', '#ff8a65', '#a1887f', '#009688', '#e91e63', '#9c27b0'];
 
-    var caregivers = JSON.parse(localStorage.getItem('caregivers') || '[{"id":"c1","name":"אמא"},{"id":"c2","name":"אבא"},{"id":"c3","name":"סבתא"}]');
-    var activities = JSON.parse(localStorage.getItem('activities') || '[{"id":"1","name":"חוג חיות","location":"Sweetnest","pricingType":"monthly_hub","singlePrice":0}]');
+    var caregivers = JSON.parse(localStorage.getItem('caregivers') || '[{"id":"c1","name":"אמא"},{"id":"c2","name":"אבא"},{"id":"c3","name":"סבתא"},{"id":"c4","name":"מטפלת"}]');
+    var activities = JSON.parse(localStorage.getItem('activities') || '[{"id":"1","name":"חוג חיות","location":"Sweetnest","pricingType":"monthly_hub","singlePrice":0},{"id":"2","name":"חוג ריקוד","location":"Sweetnest","pricingType":"monthly_hub","singlePrice":0}]');
     var monthlyData = JSON.parse(localStorage.getItem('monthlyData') || '{}');
     var hubTiers = JSON.parse(localStorage.getItem('hubTiers') || '{"1":300,"2":500,"3":700,"4":850,"5":1000}');
 
+    var locationColorMap = {};
+    var caregiverColorMap = {};
     var selectedDateKey = null;
     var selectedDayOfWeek = null;
+
+    function getColorForLocation(loc) {
+        if (!locationColorMap[loc]) {
+            var keys = Object.keys(locationColorMap);
+            locationColorMap[loc] = palette[keys.length % palette.length];
+        }
+        return locationColorMap[loc];
+    }
+
+    function getColorForCaregiver(cg) {
+        if (!caregiverColorMap[cg]) {
+            var keys = Object.keys(caregiverColorMap);
+            caregiverColorMap[cg] = palette[(keys.length + 3) % palette.length];
+        }
+        return caregiverColorMap[cg];
+    }
 
     function openTab(tabId) {
         var panels = document.querySelectorAll('.tab-panel');
@@ -447,26 +516,87 @@
 
     function saveCaregiver() {
         var name = document.getElementById('newCaregiverName').value.trim();
+        var editId = document.getElementById('editCaregiverId').value;
         if (!name) return;
-        caregivers.push({ id: 'c_' + Date.now(), name: name });
+
+        if (editId) {
+            var cg = caregivers.find(function(c){ return c.id === editId; });
+            if (cg) cg.name = name;
+        } else {
+            caregivers.push({ id: 'c_' + Date.now(), name: name });
+        }
+
         localStorage.setItem('caregivers', JSON.stringify(caregivers));
         document.getElementById('newCaregiverName').value = '';
+        document.getElementById('editCaregiverId').value = '';
+        updateUI();
+    }
+
+    function editCaregiver(id) {
+        var cg = caregivers.find(function(c){ return c.id === id; });
+        if (!cg) return;
+        document.getElementById('newCaregiverName').value = cg.name;
+        document.getElementById('editCaregiverId').value = cg.id;
+    }
+
+    function deleteCaregiver(id) {
+        if (!confirm('האם למחוק דמות מטפלת זו?')) return;
+        caregivers = caregivers.filter(function(c){ return c.id !== id; });
+        localStorage.setItem('caregivers', JSON.stringify(caregivers));
         updateUI();
     }
 
     function saveActivity(e) {
         e.preventDefault();
+        var editId = document.getElementById('editActId').value;
         var name = document.getElementById('actName').value.trim();
         var location = document.getElementById('actLocation').value.trim();
         var pricingType = document.getElementById('actPricingType').value;
         var singlePrice = parseFloat(document.getElementById('actSinglePrice').value) || 0;
         if (!name || !location) return;
 
-        activities.push({ id: Date.now().toString(), name: name, location: location, pricingType: pricingType, singlePrice: singlePrice });
+        if (editId) {
+            var act = activities.find(function(a){ return a.id === editId; });
+            if (act) {
+                act.name = name; act.location = location; act.pricingType = pricingType; act.singlePrice = singlePrice;
+            }
+        } else {
+            activities.push({ id: Date.now().toString(), name: name, location: location, pricingType: pricingType, singlePrice: singlePrice });
+        }
+
         localStorage.setItem('activities', JSON.stringify(activities));
         document.getElementById('actName').value = '';
         document.getElementById('actLocation').value = '';
+        document.getElementById('editActId').value = '';
         updateUI();
+    }
+
+    function editActivity(id) {
+        var act = activities.find(function(a){ return a.id === id; });
+        if (!act) return;
+        document.getElementById('editActId').value = act.id;
+        document.getElementById('actName').value = act.name;
+        document.getElementById('actLocation').value = act.location;
+        document.getElementById('actPricingType').value = act.pricingType;
+        document.getElementById('actSinglePrice').value = act.singlePrice;
+        togglePricingInputs();
+    }
+
+    function deleteActivity(id) {
+        if (!confirm('האם למחוק את החוג?')) return;
+        activities = activities.filter(function(a){ return a.id !== id; });
+        localStorage.setItem('activities', JSON.stringify(activities));
+        updateUI();
+    }
+
+    function saveTiers() {
+        hubTiers[1] = parseFloat(document.getElementById('tier1').value) || 0;
+        hubTiers[2] = parseFloat(document.getElementById('tier2').value) || 0;
+        hubTiers[3] = parseFloat(document.getElementById('tier3').value) || 0;
+        hubTiers[4] = parseFloat(document.getElementById('tier4').value) || 0;
+        hubTiers[5] = parseFloat(document.getElementById('tier5').value) || 0;
+        localStorage.setItem('hubTiers', JSON.stringify(hubTiers));
+        renderCalendar();
     }
 
     function renderCalendar() {
@@ -479,6 +609,7 @@
 
         for (var i = 0; i < firstDay; i++) {
             var emptyCell = document.createElement('div');
+            emptyCell.style.background = 'transparent';
             grid.appendChild(emptyCell);
         }
 
@@ -493,53 +624,183 @@
 
                 var html = '<div class="day-number">' + d + '</div><div class="day-content">';
                 if (jewishHolidaysMap[dateKey]) html += '<div class="tag tag-holiday">🍷 ' + jewishHolidaysMap[dateKey] + '</div>';
-                if (dayData.caregiver) html += '<div class="tag" style="background-color:#64b5f6">👤 ' + dayData.caregiver + '</div>';
+                
+                if (dayData.caregiver) {
+                    var cgColor = getColorForCaregiver(dayData.caregiver);
+                    html += '<div class="tag" style="background-color:' + cgColor + '">👤 ' + dayData.caregiver + '</div>';
+                }
+
                 if (dayData.activityId) {
                     var act = activities.find(function(a){ return a.id === dayData.activityId; });
-                    if (act) html += '<div class="tag" style="background-color:#81c784">🤸 ' + act.name + '</div>';
+                    if (act) {
+                        var locColor = getColorForLocation(act.location);
+                        html += '<div class="tag" style="background-color:' + locColor + '">🤸 ' + act.name + ' (' + act.location + ')</div>';
+                    }
                 }
+
+                if (dayData.notes) {
+                    html += '<div class="note-text" title="' + dayData.notes + '">' + dayData.notes + '</div>';
+                }
+
                 html += '</div>';
                 cell.innerHTML = html;
                 grid.appendChild(cell);
             })(day);
         }
+
+        calculateSummary(year, month);
+        renderLegends();
     }
 
     function openModal(dateKey, dayNum, dayOfWeek) {
         selectedDateKey = dateKey;
         selectedDayOfWeek = dayOfWeek;
-        document.getElementById('modalDateTitle').innerText = 'עריכת יום ' + dayNum;
+        var monthName = monthsHebrew[parseInt(document.getElementById('monthSelect').value)];
+        document.getElementById('modalDateTitle').innerText = 'עריכת יום ' + dayNum + ' ב' + monthName;
+        
+        var dayLabels = document.querySelectorAll('.day-name-label');
+        for(var i=0; i<dayLabels.length; i++) dayLabels[i].innerText = daysHebrewName[dayOfWeek];
+
+        var data = monthlyData[dateKey] || {};
+        document.getElementById('modalCaregiver').value = data.caregiver || '';
+        document.getElementById('modalActivity').value = data.activityId || '';
+        document.getElementById('modalNotes').value = data.notes || '';
+
         document.getElementById('dayModal').style.display = 'flex';
     }
 
     function closeModal() { document.getElementById('dayModal').style.display = 'none'; }
 
     function saveDayData() {
+        if (!selectedDateKey) return;
         var cg = document.getElementById('modalCaregiver').value;
         var act = document.getElementById('modalActivity').value;
-        var notes = document.getElementById('modalNotes').value;
+        var notes = document.getElementById('modalNotes').value.trim();
 
-        if(!cg && !act && !notes) delete monthlyData[selectedDateKey];
-        else monthlyData[selectedDateKey] = { caregiver: cg, activityId: act, notes: notes };
+        var cgRec = document.querySelector('input[name="caregiverRecurrence"]:checked').value;
+        var actRec = document.querySelector('input[name="activityRecurrence"]:checked').value;
+
+        var year = parseInt(document.getElementById('yearSelect').value);
+        var month = parseInt(document.getElementById('monthSelect').value);
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
+        var prefix = year + '-' + String(month + 1).padStart(2, '0');
+
+        if (cgRec === 'single' && actRec === 'single') {
+            updateRecord(selectedDateKey, cg, act, notes);
+        } else {
+            for (var d = 1; d <= daysInMonth; d++) {
+                var dObj = new Date(year, month, d);
+                var dKey = prefix + '-' + String(d).padStart(2, '0');
+
+                if (dObj.getDay() === selectedDayOfWeek) {
+                    var dayCg = (cgRec === 'monthly') ? cg : (monthlyData[dKey]?.caregiver || '');
+                    var dayAct = (actRec === 'monthly') ? act : (monthlyData[dKey]?.activityId || '');
+                    var dayN = (dKey === selectedDateKey) ? notes : (monthlyData[dKey]?.notes || '');
+                    updateRecord(dKey, dayCg, dayAct, dayN);
+                } else if (dKey === selectedDateKey) {
+                    var dayCg = (cgRec === 'single') ? cg : (monthlyData[dKey]?.caregiver || '');
+                    var dayAct = (actRec === 'single') ? act : (monthlyData[dKey]?.activityId || '');
+                    updateRecord(dKey, dayCg, dayAct, notes);
+                }
+            }
+        }
 
         localStorage.setItem('monthlyData', JSON.stringify(monthlyData));
         closeModal();
         renderCalendar();
     }
 
+    function updateRecord(key, cg, act, notes) {
+        if (!cg && !act && !notes) delete monthlyData[key];
+        else monthlyData[key] = { caregiver: cg, activityId: act, notes: notes };
+    }
+
+    function calculateSummary(year, month) {
+        var prefix = year + '-' + String(month + 1).padStart(2, '0');
+        var locs = {};
+        var total = 0;
+
+        Object.keys(monthlyData).forEach(function(dKey) {
+            if (dKey.startsWith(prefix)) {
+                var entry = monthlyData[dKey];
+                if (entry.activityId) {
+                    var act = activities.find(function(a){ return a.id === entry.activityId; });
+                    if (act) {
+                        var loc = act.location;
+                        if (!locs[loc]) locs[loc] = { hubDays: new Set(), fixedCost: 0, acts: {} };
+                        locs[loc].acts[act.name] = (locs[loc].acts[act.name] || 0) + 1;
+                        if (act.pricingType === 'monthly_hub') locs[loc].hubDays.add(new Date(dKey).getDay());
+                        else if (act.pricingType === 'fixed_single') locs[loc].fixedCost += act.singlePrice;
+                    }
+                }
+            }
+        });
+
+        var grid = document.getElementById('locationsSummaryGrid');
+        grid.innerHTML = '';
+        var locNames = Object.keys(locs);
+
+        if (locNames.length === 0) {
+            grid.innerHTML = '<span style="color:#777; font-size:0.9em;">אין חוגים משובצים בחודש זה.</span>';
+        }
+
+        locNames.forEach(function(loc) {
+            var data = locs[loc];
+            var count = data.hubDays.size;
+            var hubCost = hubTiers[count] || (count >= 5 ? hubTiers[5] : 0) || 0;
+            var sum = hubCost + data.fixedCost;
+            total += sum;
+            var color = getColorForLocation(loc);
+
+            var actStr = Object.keys(data.acts).map(function(n){ return n + ' (' + data.acts[n] + ' מפגשים)'; }).join(', ');
+
+            var card = document.createElement('div');
+            card.className = 'location-card';
+            card.style.borderRightColor = color;
+            card.innerHTML = '<div class="location-card-title"><span class="color-box" style="background:' + color + '"></span><span>' + loc + '</span></div>' +
+                             '<div class="location-card-detail">' + actStr + '</div>' +
+                             '<div style="font-weight:bold; margin-top:4px; color:#2e7d32;">עלות: ' + sum + ' ₪ ' + (count > 0 ? '(' + count + ' ימים/שבוע)' : '') + '</div>';
+            grid.appendChild(card);
+        });
+
+        document.getElementById('totalCost').innerText = total + ' ₪';
+    }
+
+    function renderLegends() {
+        var locLeg = document.getElementById('locationLegend');
+        locLeg.innerHTML = '';
+        Object.keys(locationColorMap).forEach(function(loc){
+            var div = document.createElement('div');
+            div.className = 'legend-item';
+            div.innerHTML = '<div class="color-box" style="background:' + locationColorMap[loc] + '"></div><span>' + loc + '</span>';
+            locLeg.appendChild(div);
+        });
+
+        var cgLeg = document.getElementById('caregiverLegend');
+        cgLeg.innerHTML = '';
+        Object.keys(caregiverColorMap).forEach(function(cg){
+            var div = document.createElement('div');
+            div.className = 'legend-item';
+            div.innerHTML = '<div class="color-box" style="background:' + caregiverColorMap[cg] + '"></div><span>' + cg + '</span>';
+            cgLeg.appendChild(div);
+        });
+    }
+
     function exportData() {
         var data = JSON.stringify({ caregivers: caregivers, activities: activities, monthlyData: monthlyData, hubTiers: hubTiers });
-        prompt("העתקי את הטקסט הזה:", data);
+        prompt("העתקי את הקוד הבא מפה ושלאי ב-WhatsApp:", data);
     }
 
     function importData() {
-        var txt = document.getElementById('importInput').value;
+        var txt = document.getElementById('importInput').value.trim();
         if (!txt) return;
         try {
             var data = JSON.parse(txt);
             localStorage.setItem('caregivers', JSON.stringify(data.caregivers));
             localStorage.setItem('activities', JSON.stringify(data.activities));
             localStorage.setItem('monthlyData', JSON.stringify(data.monthlyData));
+            if (data.hubTiers) localStorage.setItem('hubTiers', JSON.stringify(data.hubTiers));
+            alert('הנתונים נטענו בהצלחה!');
             location.reload();
         } catch(e) { alert('שגיאה בטעינת הקוד'); }
     }
@@ -550,12 +811,21 @@
         caregivers.forEach(function(c){
             var li = document.createElement('li');
             li.className = 'manage-item';
-            li.innerText = c.name;
+            li.innerHTML = '<span>' + c.name + '</span><div class="manage-actions"><button onclick="editCaregiver(\'' + c.id + '\')">ערוך</button><button class="btn-danger" onclick="deleteCaregiver(\'' + c.id + '\')">מחק</button></div>';
             cgList.appendChild(li);
         });
 
+        var actList = document.getElementById('activityManageList');
+        actList.innerHTML = '';
+        activities.forEach(function(a){
+            var li = document.createElement('li');
+            li.className = 'manage-item';
+            li.innerHTML = '<span><strong>' + a.name + '</strong> (' + a.location + ')</span><div class="manage-actions"><button onclick="editActivity(\'' + a.id + '\')">ערוך</button><button class="btn-danger" onclick="deleteActivity(\'' + a.id + '\')">מחק</button></div>';
+            actList.appendChild(li);
+        });
+
         var actSelect = document.getElementById('modalActivity');
-        actSelect.innerHTML = '<option value="">-- ללא --</option>';
+        actSelect.innerHTML = '<option value="">-- ללא חוג --</option>';
         activities.forEach(function(a){
             var opt = document.createElement('option');
             opt.value = a.id;
@@ -564,7 +834,7 @@
         });
 
         var cgSelect = document.getElementById('modalCaregiver');
-        cgSelect.innerHTML = '<option value="">-- ללא --</option>';
+        cgSelect.innerHTML = '<option value="">-- ללא דמות מטפלת --</option>';
         caregivers.forEach(function(c){
             var opt = document.createElement('option');
             opt.value = c.name;
@@ -575,8 +845,12 @@
         renderCalendar();
     }
 
-    // הפעלה מיידית וישירה
     populateMonthSelect();
+    document.getElementById('tier1').value = hubTiers[1] || 300;
+    document.getElementById('tier2').value = hubTiers[2] || 500;
+    document.getElementById('tier3').value = hubTiers[3] || 700;
+    document.getElementById('tier4').value = hubTiers[4] || 850;
+    document.getElementById('tier5').value = hubTiers[5] || 1000;
     updateUI();
 </script>
 </body>
