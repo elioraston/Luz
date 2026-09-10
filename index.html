@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ניהול סדר יום וחוגים</title>
     <style>
         :root {
@@ -15,48 +15,46 @@
             --success-color: #2e7d32;
         }
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 10px;
-            font-size: 15px;
+            padding: 8px;
+            font-size: 14px;
         }
 
         .container {
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 320px 1fr;
-            gap: 12px;
-        }
-
-        @media (max-width: 850px) {
-            .container { grid-template-columns: 1fr; }
-            header { flex-direction: column; gap: 8px; align-items: stretch !important; }
-            .summary-dashboard { grid-template-columns: 1fr !important; }
+            gap: 10px;
         }
 
         header {
             grid-column: 1 / -1;
             background: var(--card-bg);
-            padding: 12px 15px;
+            padding: 10px 12px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        h1 { margin: 0; font-size: 1.3em; }
-        h3 { margin: 0 0 8px 0; font-size: 1.05em; }
+        h1 { margin: 0; font-size: 1.2em; }
+        h3 { margin: 0 0 6px 0; font-size: 1em; }
 
         .sidebar { display: flex; flex-direction: column; gap: 10px; }
 
         .card {
             background: var(--card-bg);
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
@@ -65,20 +63,20 @@
             display: flex;
             gap: 2px;
             border-bottom: 2px solid var(--border-color);
-            margin-bottom: 10px;
-            flex-wrap: wrap;
+            margin-bottom: 8px;
         }
 
         .tab-btn {
             background: #eee;
             border: none;
-            padding: 8px 8px;
-            font-size: 0.85em;
+            padding: 8px 4px;
+            font-size: 0.8em;
             cursor: pointer;
             font-weight: bold;
             color: #555;
             border-radius: 5px 5px 0 0;
             flex: 1;
+            text-align: center;
         }
 
         .tab-btn.active {
@@ -89,11 +87,11 @@
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
-        .form-group { margin-bottom: 8px; }
+        .form-group { margin-bottom: 6px; }
 
         label {
             display: block;
-            font-size: 0.85em;
+            font-size: 0.8em;
             margin-bottom: 2px;
             font-weight: bold;
         }
@@ -103,8 +101,7 @@
             padding: 8px;
             border: 1px solid var(--border-color);
             border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
 
         button {
@@ -123,7 +120,7 @@
             list-style: none;
             padding: 0;
             margin: 6px 0 0 0;
-            max-height: 140px;
+            max-height: 120px;
             overflow-y: auto;
             border-top: 1px solid var(--border-color);
         }
@@ -132,7 +129,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px 0;
+            padding: 4px 0;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.85em;
         }
@@ -142,88 +139,88 @@
 
         .summary-dashboard {
             background: var(--card-bg);
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: grid;
-            grid-template-columns: 1fr 220px;
-            gap: 12px;
+            grid-template-columns: 1fr 180px;
+            gap: 10px;
             align-items: center;
         }
 
-        .locations-summary-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .locations-summary-grid { display: flex; flex-wrap: wrap; gap: 6px; }
 
         .location-card {
             background: #f8f9fa;
-            border-right: 5px solid var(--primary-color);
-            padding: 6px 10px;
+            border-right: 4px solid var(--primary-color);
+            padding: 4px 8px;
             border-radius: 4px;
-            min-width: 150px;
-            font-size: 0.9em;
+            min-width: 130px;
+            font-size: 0.85em;
         }
 
         .location-card-title {
             font-weight: bold;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
-        .location-card-detail { font-size: 0.85em; color: #444; }
+        .location-card-detail { font-size: 0.8em; color: #444; }
 
         .total-box {
             background: #eef7ee;
             border: 1px solid #c8e6c9;
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
             text-align: center;
         }
 
-        .total-box-amount { font-size: 1.4em; font-weight: bold; color: #1b5e20; }
+        .total-box-amount { font-size: 1.3em; font-weight: bold; color: #1b5e20; }
 
-        .calendar-controls { display: flex; align-items: center; gap: 8px; }
+        .calendar-controls { display: flex; align-items: center; gap: 6px; }
+        .calendar-controls select, .calendar-controls input { width: auto; padding: 4px 6px; }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-top: 8px;
+            gap: 3px;
+            margin-top: 6px;
         }
 
         .day-header {
             text-align: center;
             font-weight: bold;
-            padding: 6px 2px;
+            padding: 4px 1px;
             background: #eef2f5;
             border-radius: 4px;
-            font-size: 0.8em;
+            font-size: 0.75em;
         }
 
         .day-cell {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 5px;
-            min-height: 85px;
-            padding: 4px;
+            border-radius: 4px;
+            min-height: 75px;
+            padding: 3px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
         }
 
-        .day-number { font-weight: bold; font-size: 0.9em; margin-bottom: 2px; }
+        .day-number { font-weight: bold; font-size: 0.85em; }
 
-        .day-content { font-size: 0.75em; display: flex; flex-direction: column; gap: 2px; }
+        .day-content { font-size: 0.7em; display: flex; flex-direction: column; gap: 2px; }
 
         .tag {
-            padding: 2px 4px;
+            padding: 2px 3px;
             border-radius: 3px;
             color: #fff;
             font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-            font-size: 0.8em;
+            font-size: 0.75em;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -234,13 +231,12 @@
             color: #856404;
             border: 1px solid #ffeeba;
             font-weight: bold;
-            text-shadow: none;
         }
 
         .note-text {
             color: #555;
             font-style: italic;
-            font-size: 0.75em;
+            font-size: 0.7em;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -258,10 +254,10 @@
 
         .modal-content {
             background: white;
-            padding: 16px;
+            padding: 14px;
             border-radius: 8px;
-            width: 350px;
-            max-width: 90%;
+            width: 340px;
+            max-width: 95%;
         }
 
         .recurrence-box {
@@ -270,16 +266,26 @@
             padding: 6px;
             border-radius: 4px;
             margin-top: 4px;
-            font-size: 0.8em;
+            font-size: 0.78em;
         }
 
-        .radio-group { display: flex; gap: 8px; margin-top: 2px; }
-        .radio-group label { font-weight: normal; font-size: 0.85em; cursor: pointer; }
+        .radio-group { display: flex; gap: 6px; margin-top: 2px; }
+        .radio-group label { font-weight: normal; font-size: 0.8em; cursor: pointer; }
         .radio-group input { width: auto; }
 
-        .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
-        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.8em; }
-        .color-box { width: 10px; height: 10px; border-radius: 2px; }
+        .legend { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+        .legend-item { display: flex; align-items: center; gap: 3px; font-size: 0.75em; }
+        .color-box { width: 9px; height: 9px; border-radius: 2px; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 800px) {
+            .container { grid-template-columns: 1fr; }
+            .summary-dashboard { grid-template-columns: 1fr; }
+            .day-cell { min-height: 60px; padding: 2px; }
+            .day-header { font-size: 0.7em; padding: 2px 0; }
+            .tag { font-size: 0.7em; padding: 1px 2px; }
+            .day-number { font-size: 0.8em; }
+        }
     </style>
 </head>
 <body>
@@ -291,7 +297,7 @@
             <label>חודש:</label>
             <select id="monthSelect" onchange="renderCalendar()"></select>
             <label>שנה:</label>
-            <input type="number" id="yearSelect" value="2026" min="2024" max="2030" style="width: 75px;" onchange="renderCalendar()">
+            <input type="number" id="yearSelect" value="2026" min="2024" max="2030" style="width: 65px;" onchange="renderCalendar()">
         </div>
     </header>
 
@@ -349,9 +355,9 @@
             </div>
 
             <div id="tab-sync" class="tab-panel">
-                <label>1. העתקת נתונים מהמחשב:</label>
+                <label>1. העתקה מהמחשב:</label>
                 <button class="btn-success" onclick="exportData()">העתק קוד העברה</button>
-                <hr style="margin:10px 0; border:0; border-top:1px solid #ddd;">
+                <hr style="margin:8px 0; border:0; border-top:1px solid #ddd;">
                 <label>2. טעינה לטלפון:</label>
                 <textarea id="importInput" rows="3" placeholder="הדבק קוד כאן..."></textarea>
                 <button onclick="importData()">טען לטלפון</button>
@@ -360,7 +366,7 @@
 
         <div class="card">
             <label>מקרא מיקומים:</label><div id="locationLegend" class="legend"></div>
-            <label style="margin-top:8px;">מקרא מטפלים:</label><div id="caregiverLegend" class="legend"></div>
+            <label style="margin-top:6px;">מקרא מטפלים:</label><div id="caregiverLegend" class="legend"></div>
         </div>
     </div>
 
@@ -378,8 +384,8 @@
 
         <div class="card">
             <div class="calendar-grid">
-                <div class="day-header">ראשון</div><div class="day-header">שני</div><div class="day-header">שלישי</div>
-                <div class="day-header">רביעי</div><div class="day-header">חמישי</div><div class="day-header">שישי</div><div class="day-header">שבת</div>
+                <div class="day-header">א'</div><div class="day-header">ב'</div><div class="day-header">ג'</div>
+                <div class="day-header">ד'</div><div class="day-header">ה'</div><div class="day-header">ו'</div><div class="day-header">ש'</div>
             </div>
             <div class="calendar-grid" id="calendarBody"></div>
         </div>
@@ -391,7 +397,7 @@
         <h3 id="modalDateTitle">עריכת יום</h3>
         <div class="form-group">
             <label>דמות מטפלת:</label>
-            <select id="modalCaregiver"><option value="">-- ללא דמות מטפלת --</option></select>
+            <select id="modalCaregiver"><option value="">-- ללא --</option></select>
             <div class="recurrence-box">
                 <strong>תדירות למטפל/ת:</strong>
                 <div class="radio-group">
@@ -402,7 +408,7 @@
         </div>
         <div class="form-group">
             <label>חוג:</label>
-            <select id="modalActivity"><option value="">-- ללא חוג --</option></select>
+            <select id="modalActivity"><option value="">-- ללא --</option></select>
             <div class="recurrence-box">
                 <strong>תדירות לחוג:</strong>
                 <div class="radio-group">
@@ -415,7 +421,7 @@
             <label>הערות:</label>
             <textarea id="modalNotes" rows="2" placeholder="הערות ליום זה..."></textarea>
         </div>
-        <div style="display:flex; gap:8px;">
+        <div style="display:flex; gap:6px;">
             <button onclick="saveDayData()">שמור</button>
             <button onclick="closeModal()" style="background:#888;">ביטול</button>
         </div>
@@ -424,37 +430,23 @@
 
 <script>
     var jewishHolidaysMap = {
-        // --- 2025 ---
         "2025-03-13": "ערב פורים", "2025-03-14": "פורים", "2025-03-15": "שושן פורים",
-        "2025-04-12": "ערב פסח", "2025-04-13": "פסח (חג)", "2025-04-14": "חול המועד פסח",
-        "2025-04-15": "חול המועד פסח", "2025-04-16": "חול המועד פסח", "2025-04-17": "חול המועד פסח",
-        "2025-04-18": "ערב שביעי של פסח", "2025-04-19": "שביעי של פסח",
-        "2025-04-24": "יום השואה", "2025-04-29": "יום הזיכרון", "2025-04-30": "יום העצמאות",
-        "2025-05-16": "ל\"ג בעומר", "2025-05-26": "יום ירושלים", "2025-06-01": "ערב שבועות", "2025-06-02": "שבועות",
-        "2025-09-22": "ערב ראש השנה", "2025-09-23": "ראש השנה א'", "2025-09-24": "ראש השנה ב'", "2025-09-25": "צום גדליה",
-        "2025-10-01": "ערב יום כיפור", "2025-10-02": "יום כיפור",
-        "2025-10-06": "ערב סוכות", "2025-10-07": "סוכות (חג)", "2025-10-08": "חול המועד סוכות",
-        "2025-10-09": "חול המועד סוכות", "2025-10-10": "חול המועד סוכות", "2025-10-11": "חול המועד סוכות",
-        "2025-10-12": "הושענא רבה", "2025-10-13": "שמחת תורה / שמיני עצרת",
-        "2025-12-15": "חנוכה (נר 1)", "2025-12-16": "חנוכה (נר 2)", "2025-12-17": "חנוכה (נר 3)",
-        "2025-12-18": "חנוכה (נר 4)", "2025-12-19": "חנוכה (נר 5)", "2025-12-20": "חנוכה (נר 6)",
-        "2025-12-21": "חנוכה (נר 7)", "2025-12-22": "חנוכה (נר 8)",
+        "2025-04-12": "ערב פסח", "2025-04-13": "פסח", "2025-04-14": "חול המועד", "2025-04-15": "חול המועד",
+        "2025-04-16": "חול המועד", "2025-04-17": "חול המועד", "2025-04-18": "ערב חג", "2025-04-19": "שביעי של פסח",
+        "2025-04-24": "יום השואה", "2025-04-29": "יום הזיכרון", "2025-04-30": "עצמאות", "2025-05-16": "ל\"ג בעומר",
+        "2025-06-01": "ערב שבועות", "2025-06-02": "שבועות", "2025-09-22": "ערב ר\"ה", "2025-09-23": "ראש השנה א'",
+        "2025-09-24": "ראש השנה ב'", "2025-09-25": "צום גדליה", "2025-10-01": "ערב יום כיפור", "2025-10-02": "יום כיפור",
+        "2025-10-06": "ערב סוכות", "2025-10-07": "סוכות", "2025-10-08": "חוה\"מ", "2025-10-09": "חוה\"מ", "2025-10-10": "חוה\"מ",
+        "2025-10-11": "חוה\"מ", "2025-10-12": "הושענא רבה", "2025-10-13": "שמחת תורה", "2025-12-15": "חנוכה",
 
-        // --- 2026 ---
         "2026-03-02": "ערב פורים", "2026-03-03": "פורים", "2026-03-04": "שושן פורים",
-        "2026-04-01": "ערב פסח", "2026-04-02": "פסח (חג)", "2026-04-03": "חול המועד פסח",
-        "2026-04-04": "חול המועד פסח", "2026-04-05": "חול המועד פסח", "2026-04-06": "חול המועד פסח",
-        "2026-04-07": "ערב שביעי של פסח", "2026-04-08": "שביעי של פסח",
-        "2026-04-14": "יום השואה", "2026-04-21": "יום הזיכרון", "2026-04-22": "יום העצמאות",
-        "2026-05-05": "ל\"ג בעומר", "2026-05-15": "יום ירושלים", "2026-05-21": "ערב שבועות", "2026-05-22": "שבועות",
-        "2026-09-11": "ערב ראש השנה", "2026-09-12": "ראש השנה א'", "2026-09-13": "ראש השנה ב'", "2026-09-14": "צום גדליה",
-        "2026-09-20": "ערב יום כיפור", "2026-09-21": "יום כיפור",
-        "2026-09-25": "ערב סוכות", "2026-09-26": "סוכות (חג)", "2026-09-27": "חול המועד סוכות",
-        "2026-09-28": "חול המועד סוכות", "2026-09-29": "חול המועד סוכות", "2026-09-30": "חול המועד סוכות",
-        "2026-10-01": "הושענא רבה", "2026-10-02": "שמחת תורה / שמיני עצרת",
-        "2026-12-05": "חנוכה (נר 1)", "2026-12-06": "חנוכה (נר 2)", "2026-12-07": "חנוכה (נר 3)",
-        "2026-12-08": "חנוכה (נר 4)", "2026-12-09": "חנוכה (נר 5)", "2026-12-10": "חנוכה (נר 6)",
-        "2026-12-11": "חנוכה (נר 7)", "2026-12-12": "חנוכה (נר 8)"
+        "2026-04-01": "ערב פסח", "2026-04-02": "פסח", "2026-04-03": "חוה\"מ", "2026-04-04": "חוה\"מ",
+        "2026-04-05": "חוה\"מ", "2026-04-06": "חוה\"מ", "2026-04-07": "ערב חג", "2026-04-08": "שביעי של פסח",
+        "2026-04-14": "יום השואה", "2026-04-21": "יום הזיכרון", "2026-04-22": "עצמאות", "2026-05-05": "ל\"ג בעומר",
+        "2026-05-21": "ערב שבועות", "2026-05-22": "שבועות", "2026-09-11": "ערב ר\"ה", "2026-09-12": "ראש השנה א'",
+        "2026-09-13": "ראש השנה ב'", "2026-09-14": "צום גדליה", "2026-09-20": "ערב יום כיפור", "2026-09-21": "יום כיפור",
+        "2026-09-25": "ערב סוכות", "2026-09-26": "סוכות", "2026-09-27": "חוה\"מ", "2026-09-28": "חוה\"מ",
+        "2026-09-29": "חוה\"מ", "2026-09-30": "חוה\"מ", "2026-10-01": "הושענא רבה", "2026-10-02": "שמחת תורה", "2026-12-05": "חנוכה"
     };
 
     var monthsHebrew = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
@@ -462,7 +454,7 @@
     var palette = ['#e57373', '#ba68c8', '#64b5f6', '#4db6ac', '#81c784', '#ffd54f', '#ff8a65', '#a1887f', '#009688', '#e91e63', '#9c27b0'];
 
     var caregivers = JSON.parse(localStorage.getItem('caregivers') || '[{"id":"c1","name":"אמא"},{"id":"c2","name":"אבא"},{"id":"c3","name":"סבתא"},{"id":"c4","name":"מטפלת"}]');
-    var activities = JSON.parse(localStorage.getItem('activities') || '[{"id":"1","name":"חוג חיות","location":"Sweetnest","pricingType":"monthly_hub","singlePrice":0},{"id":"2","name":"חוג ריקוד","location":"Sweetnest","pricingType":"monthly_hub","singlePrice":0}]');
+    var activities = JSON.parse(localStorage.getItem('activities') || '[{"id":"1","name":"חוג חיות","location":"Sweetnest","pricingType":"monthly_hub","singlePrice":0}]');
     var monthlyData = JSON.parse(localStorage.getItem('monthlyData') || '{}');
     var hubTiers = JSON.parse(localStorage.getItem('hubTiers') || '{"1":300,"2":500,"3":700,"4":850,"5":1000}');
 
@@ -540,7 +532,7 @@
     }
 
     function deleteCaregiver(id) {
-        if (!confirm('האם למחוק דמות מטפלת זו?')) return;
+        if (!confirm('האם למחוק?')) return;
         caregivers = caregivers.filter(function(c){ return c.id !== id; });
         localStorage.setItem('caregivers', JSON.stringify(caregivers));
         updateUI();
@@ -741,7 +733,7 @@
         var locNames = Object.keys(locs);
 
         if (locNames.length === 0) {
-            grid.innerHTML = '<span style="color:#777; font-size:0.9em;">אין חוגים משובצים בחודש זה.</span>';
+            grid.innerHTML = '<span style="color:#777; font-size:0.85em;">אין חוגים משובצים.</span>';
         }
 
         locNames.forEach(function(loc) {
@@ -752,14 +744,14 @@
             total += sum;
             var color = getColorForLocation(loc);
 
-            var actStr = Object.keys(data.acts).map(function(n){ return n + ' (' + data.acts[n] + ' מפגשים)'; }).join(', ');
+            var actStr = Object.keys(data.acts).map(function(n){ return n + ' (' + data.acts[n] + ')'; }).join(', ');
 
             var card = document.createElement('div');
             card.className = 'location-card';
             card.style.borderRightColor = color;
             card.innerHTML = '<div class="location-card-title"><span class="color-box" style="background:' + color + '"></span><span>' + loc + '</span></div>' +
                              '<div class="location-card-detail">' + actStr + '</div>' +
-                             '<div style="font-weight:bold; margin-top:4px; color:#2e7d32;">עלות: ' + sum + ' ₪ ' + (count > 0 ? '(' + count + ' ימים/שבוע)' : '') + '</div>';
+                             '<div style="font-weight:bold; margin-top:2px; color:#2e7d32;">עלות: ' + sum + ' ₪</div>';
             grid.appendChild(card);
         });
 
@@ -787,22 +779,46 @@
     }
 
     function exportData() {
-        var data = JSON.stringify({ caregivers: caregivers, activities: activities, monthlyData: monthlyData, hubTiers: hubTiers });
-        prompt("העתקי את הקוד הבא מפה ושלאי ב-WhatsApp:", data);
+        var dataObj = { caregivers: caregivers, activities: activities, monthlyData: monthlyData, hubTiers: hubTiers };
+        var jsonStr = JSON.stringify(dataObj);
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(jsonStr).then(function() {
+                alert('קוד ההעברה הועתק! שלחי אותו ב-WhatsApp והדביקי בטלפון.');
+            }).catch(function() {
+                prompt("העתקי את הטקסט:", jsonStr);
+            });
+        } else {
+            prompt("העתקי את הטקסט:", jsonStr);
+        }
     }
 
     function importData() {
-        var txt = document.getElementById('importInput').value.trim();
-        if (!txt) return;
+        var rawInput = document.getElementById('importInput').value;
+        if (!rawInput || !rawInput.trim()) {
+            alert('אנא הדבקי את קוד ההעברה בתיבה.');
+            return;
+        }
+
+        // Clean formatting artifacts
+        var cleanTxt = rawInput.trim().replace(/[\r\n\t]/g, '');
+
         try {
-            var data = JSON.parse(txt);
-            localStorage.setItem('caregivers', JSON.stringify(data.caregivers));
-            localStorage.setItem('activities', JSON.stringify(data.activities));
-            localStorage.setItem('monthlyData', JSON.stringify(data.monthlyData));
-            if (data.hubTiers) localStorage.setItem('hubTiers', JSON.stringify(data.hubTiers));
-            alert('הנתונים נטענו בהצלחה!');
-            location.reload();
-        } catch(e) { alert('שגיאה בטעינת הקוד'); }
+            var parsedObj = JSON.parse(cleanTxt);
+            if (parsedObj && typeof parsedObj === 'object') {
+                if (parsedObj.caregivers) localStorage.setItem('caregivers', JSON.stringify(parsedObj.caregivers));
+                if (parsedObj.activities) localStorage.setItem('activities', JSON.stringify(parsedObj.activities));
+                if (parsedObj.monthlyData) localStorage.setItem('monthlyData', JSON.stringify(parsedObj.monthlyData));
+                if (parsedObj.hubTiers) localStorage.setItem('hubTiers', JSON.stringify(parsedObj.hubTiers));
+
+                alert('הנתונים נטענו בהצלחה!');
+                location.reload();
+            } else {
+                alert('קוד לא תקין.');
+            }
+        } catch(e) {
+            alert('שגיאה בפענוח הקוד. ודאי שהעתקת את כל הקוד ללא השמטה.');
+        }
     }
 
     function updateUI() {
