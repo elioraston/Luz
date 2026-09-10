@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ניהול סדר יום וחוגים</title>
     
-    <!-- אייקון התמונה המותאם אישית -->
-    <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1_T3_Xg_placeholder_image">
-    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1_T3_Xg_placeholder_image">
+    <!-- אייקון למסך הבית באייפון ובלשונית הדפדפן -->
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
 
     <style>
         :root {
@@ -55,6 +55,20 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 8px;
+        }
+
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         }
 
         h1 { margin: 0; font-size: 1.15em; }
@@ -340,7 +354,10 @@
 <div class="container">
     <div class="main-content">
         <header>
-            <h1>ניהול סדר יום וחוגים</h1>
+            <div class="header-title-container">
+                <img src="icon.png" alt="לוגו" class="header-logo" onerror="this.style.display='none'">
+                <h1>ניהול סדר יום וחוגים</h1>
+            </div>
             <div class="calendar-controls">
                 <label>חודש:</label>
                 <select id="monthSelect" onchange="renderCalendar()"></select>
