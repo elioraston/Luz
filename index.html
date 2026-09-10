@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול סדר יום וחוגים</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #222222;
+            --border-color: #d0d0d0;
+            --danger-color: #e53935;
+            --success-color: #2e7d32;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 850px) {
+            .container { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 8px; align-items: stretch !important; }
+            .summary-dashboard { grid-template-columns: 1fr !important; }
+        }
+
+        header {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            padding: 12px 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 { margin: 0; font-size: 1.3em; }
+        h3 { margin: 0 0 8px 0; font-size: 1.05em; }
+
+        .sidebar { display: flex; flex-direction: column; gap: 10px; }
+
+        .card {
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: #eee;
+            border: none;
+            padding: 8px 10px;
+            font-size: 0.85em;
+            cursor: pointer;
+            font-weight: bold;
+            color: #555;
+            border-radius: 5px 5px 0 0;
+            flex: 1;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .form-group { margin-bottom: 8px; }
+
+        label {
+            display: block;
+            font-size: 0.85em;
+            margin-bottom: 2px;
+            font-weight: bold;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 0.95em;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .btn-danger { background-color: var(--danger-color); }
+        .btn-success { background-color: var(--success-color); }
+
+        .manage-list {
+            list-style: none;
+            padding: 0;
+            margin: 6px 0 0 0;
+            max-height: 140px;
+            overflow-y: auto;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .manage-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85em;
+        }
+
+        .manage-actions { display: flex; gap: 3px; }
+        .manage-actions button { padding: 2px 5px; font-size: 0.75em; margin: 0; width: auto; }
+
+        .summary-dashboard {
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .locations-summary-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .location-card {
+            background: #f8f9fa;
+            border-right: 4px solid var(--primary-color);
+            padding: 6px 10px;
+            border-radius: 4px;
+            min-width: 140px;
+            font-size: 0.9em;
+        }
+
+        .total-box {
+            background: #eef7ee;
+            border: 1px solid #c8e6c9;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .total-box-amount { font-size: 1.4em; font-weight: bold; color: #1b5e20; }
+
+        .calendar-controls { display: flex; align-items: center; gap: 8px; }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 6px 2px;
+            background: #eef2f5;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        .day-cell {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            min-height: 80px;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .day-number { font-weight: bold; font-size: 0.9em; }
+
+        .day-content { font-size: 0.75em; display: flex; flex-direction: column; gap: 2px; }
+
+        .tag {
+            padding: 2px 4px;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 0.8em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tag-holiday { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; font-weight: bold; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            width: 340px;
+            max-width: 90%;
+        }
+
+        .recurrence-box {
+            background: #f8f9fa;
+            border: 1px dashed var(--border-color);
+            padding: 6px;
+            border-radius: 4px;
+            margin-top: 4px;
+            font-size: 0.8em;
+        }
+
+        .radio-group { display: flex; gap: 8px; margin-top: 2px; }
+        .radio-group label { font-weight: normal; font-size: 0.85em; cursor: pointer; }
+        .radio-group input { width: auto; }
+
+        .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+        .legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.8em; }
+        .color-box { width: 10px; height: 10px; border-radius: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>ניהול סדר יום וחוגים</h1>
+        <div class="calendar-controls">
+            <label>חודש:</label>
+            <select id="monthSelect" onchange="renderCalendar()"></select>
+            <label>שנה:</label>
+            <input type="number" id="yearSelect" value="2026" min="2024" max="2030" style="width: 75px;" onchange="renderCalendar()">
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <div class="card">
+            <div class="sidebar-tabs">
+                <button class="tab-btn active" id="btn-caregivers" onclick="openTab('tab-caregivers')">מטפלים</button>
+                <button class="tab-btn" id="btn-activities" onclick="openTab('tab-activities')">חוגים</button>
+                <button class="tab-btn" id="btn-pricing" onclick="openTab('tab-pricing')">תמחור</button>
+                <button class="tab-btn" id="btn-sync" onclick="openTab('tab-sync')" style="color:#d32f2f;">העברה</button>
+            </div>
+
+            <div id="tab-caregivers" class="tab-panel active">
+                <div style="display:flex; gap:4px;">
+                    <input type="text" id="newCaregiverName" placeholder="שם המטפל/ת">
+                    <button onclick="saveCaregiver()" style="width:auto; white-space:nowrap;">שמור</button>
+                </div>
+                <input type="hidden" id="editCaregiverId">
+                <ul id="caregiverManageList" class="manage-list"></ul>
+            </div>
+
+            <div id="tab-activities" class="tab-panel">
+                <form onsubmit="saveActivity(event)">
+                    <input type="hidden" id="editActId">
+                    <div class="form-group">
+                        <label>שם החוג</label>
+                        <input type="text" id="actName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>מיקום החוג</label>
+                        <input type="text" id="actLocation" required>
+                    </div>
+                    <div class="form-group">
+                        <label>סוג תמחור</label>
+                        <select id="actPricingType" onchange="togglePricingInputs()">
+                            <option value="monthly_hub">חיוב חודשי לפי כמות ימים</option>
+                            <option value="fixed_single">חוג עצמאי (מחיר למפגש)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="singlePriceGroup" style="display:none;">
+                        <label>מחיר למפגש (₪)</label>
+                        <input type="number" id="actSinglePrice" value="0">
+                    </div>
+                    <button type="submit" id="submitActBtn">הוסף חוג</button>
+                </form>
+                <ul id="activityManageList" class="manage-list"></ul>
+            </div>
+
+            <div id="tab-pricing" class="tab-panel">
+                <div class="form-group"><label>פעם בשבוע (₪):</label><input type="number" id="tier1" value="300" onchange="saveTiers()"></div>
+                <div class="form-group"><label>פעמיים בשבוע (₪):</label><input type="number" id="tier2" value="500" onchange="saveTiers()"></div>
+                <div class="form-group"><label>3 פעמים בשבוע (₪):</label><input type="number" id="tier3" value="700" onchange="saveTiers()"></div>
+                <div class="form-group"><label>4 פעמים בשבוע (₪):</label><input type="number" id="tier4" value="850" onchange="saveTiers()"></div>
+                <div class="form-group"><label>5 פעמים בשבוע (₪):</label><input type="number" id="tier5" value="1000" onchange="saveTiers()"></div>
+            </div>
+
+            <div id="tab-sync" class="tab-panel">
+                <label>1. העתקת נתונים מהמחשב:</label>
+                <button class="btn-success" onclick="exportData()">העתק קוד העברה</button>
+                <hr style="margin:10px 0; border:0; border-top:1px solid #ddd;">
+                <label>2. טעינה לטלפון:</label>
+                <textarea id="importInput" rows="3" placeholder="הדבק קוד כאן..."></textarea>
+                <button onclick="importData()">טען לטלפון</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <label>מקרא מיקומים:</label><div id="locationLegend" class="legend"></div>
+            <label style="margin-top:6px;">מקרא מטפלים:</label><div id="caregiverLegend" class="legend"></div>
+        </div>
+    </div>
+
+    <div>
+        <div class="summary-dashboard">
+            <div>
+                <h3>תמונת מצב ועלויות לפי מיקום</h3>
+                <div id="locationsSummaryGrid" class="locations-summary-grid"></div>
+            </div>
+            <div class="total-box">
+                <div>סה"כ לתשלום:</div>
+                <div id="totalCost" class="total-box-amount">0 ₪</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="calendar-grid">
+                <div class="day-header">ראשון</div><div class="day-header">שני</div><div class="day-header">שלישי</div>
+                <div class="day-header">רביעי</div><div class="day-header">חמישי</div><div class="day-header">שישי</div><div class="day-header">שבת</div>
+            </div>
+            <div class="calendar-grid" id="calendarBody"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="dayModal">
+    <div class="modal-content">
+        <h3 id="modalDateTitle">עריכת יום</h3>
+        <div class="form-group">
+            <label>מטפל/ת:</label>
+            <select id="modalCaregiver"><option value="">-- ללא --</option></select>
+            <div class="recurrence-box">
+                <strong>תדירות:</strong>
+                <div class="radio-group">
+                    <label><input type="radio" name="caregiverRecurrence" value="single" checked> יום זה בלבד</label>
+                    <label><input type="radio" name="caregiverRecurrence" value="monthly"> לכל ימי <span class="day-name-label"></span></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>חוג:</label>
+            <select id="modalActivity"><option value="">-- ללא --</option></select>
+            <div class="recurrence-box">
+                <strong>תדירות:</strong>
+                <div class="radio-group">
+                    <label><input type="radio" name="activityRecurrence" value="single" checked> יום זה בלבד</label>
+                    <label><input type="radio" name="activityRecurrence" value="monthly"> לכל ימי <span class="day-name-label"></span></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>הערות:</label>
+            <textarea id="modalNotes" rows="2"></textarea>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <button onclick="saveDayData()">שמור</button>
+            <button onclick="closeModal()" style="background:#888;">ביטול</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var jewishHolidaysMap = {
+        "2025-04-12": "ערב פסח", "2025-04-13": "פסח", "2025-04-19": "שביעי של פסח",
+        "2025-04-30": "יום העצמאות", "2025-05-16": "ל\"ג בעומר", "2025-06-02": "שבועות",
+        "2025-09-22": "ערב ראש השנה", "2025-09-23": "ראש השנה", "2025-10-01": "ערב יום כיפור",
+        "2025-10-02": "יום כיפור", "2025-10-06": "ערב סוכות", "2025-10-07": "סוכות",
+        "2026-03-02": "ערב פורים", "2026-03-03": "פורים", "2026-04-01": "ערב פסח", "2026-04-02": "פסח",
+        "2026-04-22": "יום העצמאות", "2026-05-05": "ל\"ג בעומר", "2026-05-22": "שבועות",
+        "2026-09-11": "ערב ראש השנה", "2026-09-12": "ראש השנה", "2026-09-20": "ערב יום כיפור",
+        "2026-09-21": "יום כיפור", "2026-09-25": "ערב סוכות", "2026-09-26": "סוכות"
+    };
+
+    var monthsHebrew = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
+    var daysHebrewName = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+    var colors = ['#e57373', '#ba68c8', '#64b5f6', '#4db6ac', '#81c784', '#ffd54f', '#ff8a65'];
+
+    var caregivers = JSON.parse(localStorage.getItem('caregivers') || '[{"id":"c1","name":"אמא"},{"id":"c2","name":"אבא"},{"id":"c3","name":"סבתא"}]');
+    var activities = JSON.parse(localStorage.getItem('activities') || '[{"id":"1","name":"חוג חיות","location":"Sweetnest","pricingType":"monthly_hub","singlePrice":0}]');
+    var monthlyData = JSON.parse(localStorage.getItem('monthlyData') || '{}');
+    var hubTiers = JSON.parse(localStorage.getItem('hubTiers') || '{"1":300,"2":500,"3":700,"4":850,"5":1000}');
+
+    var selectedDateKey = null;
+    var selectedDayOfWeek = null;
+
+    function openTab(tabId) {
+        var panels = document.querySelectorAll('.tab-panel');
+        for(var i=0; i<panels.length; i++) panels[i].classList.remove('active');
+        var btns = document.querySelectorAll('.tab-btn');
+        for(var j=0; j<btns.length; j++) btns[j].classList.remove('active');
+
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById('btn-' + tabId.replace('tab-', '')).classList.add('active');
+    }
+
+    function populateMonthSelect() {
+        var mSelect = document.getElementById('monthSelect');
+        mSelect.innerHTML = '';
+        for (var i = 0; i < monthsHebrew.length; i++) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = monthsHebrew[i];
+            mSelect.appendChild(opt);
+        }
+        mSelect.value = new Date().getMonth();
+    }
+
+    function togglePricingInputs() {
+        var type = document.getElementById('actPricingType').value;
+        document.getElementById('singlePriceGroup').style.display = type === 'fixed_single' ? 'block' : 'none';
+    }
+
+    function saveCaregiver() {
+        var name = document.getElementById('newCaregiverName').value.trim();
+        if (!name) return;
+        caregivers.push({ id: 'c_' + Date.now(), name: name });
+        localStorage.setItem('caregivers', JSON.stringify(caregivers));
+        document.getElementById('newCaregiverName').value = '';
+        updateUI();
+    }
+
+    function saveActivity(e) {
+        e.preventDefault();
+        var name = document.getElementById('actName').value.trim();
+        var location = document.getElementById('actLocation').value.trim();
+        var pricingType = document.getElementById('actPricingType').value;
+        var singlePrice = parseFloat(document.getElementById('actSinglePrice').value) || 0;
+        if (!name || !location) return;
+
+        activities.push({ id: Date.now().toString(), name: name, location: location, pricingType: pricingType, singlePrice: singlePrice });
+        localStorage.setItem('activities', JSON.stringify(activities));
+        document.getElementById('actName').value = '';
+        document.getElementById('actLocation').value = '';
+        updateUI();
+    }
+
+    function renderCalendar() {
+        var month = parseInt(document.getElementById('monthSelect').value);
+        var year = parseInt(document.getElementById('yearSelect').value);
+        var firstDay = new Date(year, month, 1).getDay();
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
+        var grid = document.getElementById('calendarBody');
+        grid.innerHTML = '';
+
+        for (var i = 0; i < firstDay; i++) {
+            var emptyCell = document.createElement('div');
+            grid.appendChild(emptyCell);
+        }
+
+        for (var day = 1; day <= daysInMonth; day++) {
+            (function(d) {
+                var dateKey = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                var dayData = monthlyData[dateKey] || {};
+                var cell = document.createElement('div');
+                cell.className = 'day-cell';
+                var dateObj = new Date(year, month, d);
+                cell.onclick = function() { openModal(dateKey, d, dateObj.getDay()); };
+
+                var html = '<div class="day-number">' + d + '</div><div class="day-content">';
+                if (jewishHolidaysMap[dateKey]) html += '<div class="tag tag-holiday">🍷 ' + jewishHolidaysMap[dateKey] + '</div>';
+                if (dayData.caregiver) html += '<div class="tag" style="background-color:#64b5f6">👤 ' + dayData.caregiver + '</div>';
+                if (dayData.activityId) {
+                    var act = activities.find(function(a){ return a.id === dayData.activityId; });
+                    if (act) html += '<div class="tag" style="background-color:#81c784">🤸 ' + act.name + '</div>';
+                }
+                html += '</div>';
+                cell.innerHTML = html;
+                grid.appendChild(cell);
+            })(day);
+        }
+    }
+
+    function openModal(dateKey, dayNum, dayOfWeek) {
+        selectedDateKey = dateKey;
+        selectedDayOfWeek = dayOfWeek;
+        document.getElementById('modalDateTitle').innerText = 'עריכת יום ' + dayNum;
+        document.getElementById('dayModal').style.display = 'flex';
+    }
+
+    function closeModal() { document.getElementById('dayModal').style.display = 'none'; }
+
+    function saveDayData() {
+        var cg = document.getElementById('modalCaregiver').value;
+        var act = document.getElementById('modalActivity').value;
+        var notes = document.getElementById('modalNotes').value;
+
+        if(!cg && !act && !notes) delete monthlyData[selectedDateKey];
+        else monthlyData[selectedDateKey] = { caregiver: cg, activityId: act, notes: notes };
+
+        localStorage.setItem('monthlyData', JSON.stringify(monthlyData));
+        closeModal();
+        renderCalendar();
+    }
+
+    function exportData() {
+        var data = JSON.stringify({ caregivers: caregivers, activities: activities, monthlyData: monthlyData, hubTiers: hubTiers });
+        prompt("העתקי את הטקסט הזה:", data);
+    }
+
+    function importData() {
+        var txt = document.getElementById('importInput').value;
+        if (!txt) return;
+        try {
+            var data = JSON.parse(txt);
+            localStorage.setItem('caregivers', JSON.stringify(data.caregivers));
+            localStorage.setItem('activities', JSON.stringify(data.activities));
+            localStorage.setItem('monthlyData', JSON.stringify(data.monthlyData));
+            location.reload();
+        } catch(e) { alert('שגיאה בטעינת הקוד'); }
+    }
+
+    function updateUI() {
+        var cgList = document.getElementById('caregiverManageList');
+        cgList.innerHTML = '';
+        caregivers.forEach(function(c){
+            var li = document.createElement('li');
+            li.className = 'manage-item';
+            li.innerText = c.name;
+            cgList.appendChild(li);
+        });
+
+        var actSelect = document.getElementById('modalActivity');
+        actSelect.innerHTML = '<option value="">-- ללא --</option>';
+        activities.forEach(function(a){
+            var opt = document.createElement('option');
+            opt.value = a.id;
+            opt.innerText = a.name + ' (' + a.location + ')';
+            actSelect.appendChild(opt);
+        });
+
+        var cgSelect = document.getElementById('modalCaregiver');
+        cgSelect.innerHTML = '<option value="">-- ללא --</option>';
+        caregivers.forEach(function(c){
+            var opt = document.createElement('option');
+            opt.value = c.name;
+            opt.innerText = c.name;
+            cgSelect.appendChild(opt);
+        });
+
+        renderCalendar();
+    }
+
+    // הפעלה מיידית וישירה
+    populateMonthSelect();
+    updateUI();
+</script>
+</body>
+</html>
