@@ -23,21 +23,27 @@
             color: var(--text-color);
             margin: 0;
             padding: 8px;
-            font-size: 14px;
+            font-size: 15px;
         }
 
+        /* Desktop Layout (Main Calendar on Left/Top, Sidebar on Right) */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 10px;
+            grid-template-columns: 1fr 320px;
+            gap: 12px;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         header {
-            grid-column: 1 / -1;
             background: var(--card-bg);
-            padding: 10px 12px;
+            padding: 10px 14px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
             display: flex;
@@ -47,14 +53,14 @@
             gap: 8px;
         }
 
-        h1 { margin: 0; font-size: 1.2em; }
-        h3 { margin: 0 0 6px 0; font-size: 1em; }
+        h1 { margin: 0; font-size: 1.25em; }
+        h3 { margin: 0 0 6px 0; font-size: 1.05em; }
 
         .sidebar { display: flex; flex-direction: column; gap: 10px; }
 
         .card {
             background: var(--card-bg);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
@@ -70,7 +76,7 @@
             background: #eee;
             border: none;
             padding: 8px 4px;
-            font-size: 0.8em;
+            font-size: 0.85em;
             cursor: pointer;
             font-weight: bold;
             color: #555;
@@ -87,11 +93,11 @@
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
-        .form-group { margin-bottom: 6px; }
+        .form-group { margin-bottom: 8px; }
 
         label {
             display: block;
-            font-size: 0.8em;
+            font-size: 0.85em;
             margin-bottom: 2px;
             font-weight: bold;
         }
@@ -101,7 +107,7 @@
             padding: 8px;
             border: 1px solid var(--border-color);
             border-radius: 5px;
-            font-size: 0.9em;
+            font-size: 0.95em;
         }
 
         button {
@@ -120,7 +126,7 @@
             list-style: none;
             padding: 0;
             margin: 6px 0 0 0;
-            max-height: 120px;
+            max-height: 140px;
             overflow-y: auto;
             border-top: 1px solid var(--border-color);
         }
@@ -129,7 +135,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
+            padding: 5px 0;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.85em;
         }
@@ -139,12 +145,11 @@
 
         .summary-dashboard {
             background: var(--card-bg);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-            margin-bottom: 8px;
             display: grid;
-            grid-template-columns: 1fr 180px;
+            grid-template-columns: 1fr 200px;
             gap: 10px;
             align-items: center;
         }
@@ -154,10 +159,10 @@
         .location-card {
             background: #f8f9fa;
             border-right: 4px solid var(--primary-color);
-            padding: 4px 8px;
+            padding: 6px 8px;
             border-radius: 4px;
             min-width: 130px;
-            font-size: 0.85em;
+            font-size: 0.88em;
         }
 
         .location-card-title {
@@ -168,62 +173,66 @@
             gap: 4px;
         }
 
-        .location-card-detail { font-size: 0.8em; color: #444; }
+        .location-card-detail { font-size: 0.82em; color: #444; }
 
         .total-box {
             background: #eef7ee;
             border: 1px solid #c8e6c9;
-            padding: 8px;
+            padding: 10px;
             border-radius: 6px;
             text-align: center;
         }
 
-        .total-box-amount { font-size: 1.3em; font-weight: bold; color: #1b5e20; }
+        .total-box-amount { font-size: 1.4em; font-weight: bold; color: #1b5e20; }
 
-        .calendar-controls { display: flex; align-items: center; gap: 6px; }
-        .calendar-controls select, .calendar-controls input { width: auto; padding: 4px 6px; }
+        .calendar-controls { display: flex; align-items: center; gap: 6px; font-weight: bold; }
+        .calendar-controls select, .calendar-controls input { width: auto; padding: 6px; font-size: 0.95em; }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 3px;
-            margin-top: 6px;
+            margin-top: 4px;
+            width: 100%;
         }
 
         .day-header {
             text-align: center;
             font-weight: bold;
-            padding: 4px 1px;
+            padding: 6px 1px;
             background: #eef2f5;
             border-radius: 4px;
-            font-size: 0.75em;
+            font-size: 0.85em;
         }
 
         .day-cell {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            min-height: 75px;
-            padding: 3px;
+            border-radius: 5px;
+            min-height: 85px;
+            padding: 4px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
+            word-wrap: break-word;
+            overflow: hidden;
         }
 
-        .day-number { font-weight: bold; font-size: 0.85em; }
+        .day-number { font-weight: bold; font-size: 0.95em; margin-bottom: 2px; }
 
-        .day-content { font-size: 0.7em; display: flex; flex-direction: column; gap: 2px; }
+        .day-content { font-size: 0.82em; display: flex; flex-direction: column; gap: 3px; }
 
+        /* Multiline tags so full text shows nicely */
         .tag {
-            padding: 2px 3px;
+            padding: 2px 4px;
             border-radius: 3px;
             color: #fff;
             font-weight: 500;
-            font-size: 0.75em;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            font-size: 0.82em;
+            white-space: normal;
+            line-height: 1.2;
+            word-break: break-word;
         }
 
         .tag-holiday {
@@ -236,10 +245,9 @@
         .note-text {
             color: #555;
             font-style: italic;
-            font-size: 0.7em;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 0.8em;
+            white-space: normal;
+            line-height: 1.1;
         }
 
         .modal {
@@ -254,9 +262,9 @@
 
         .modal-content {
             background: white;
-            padding: 14px;
+            padding: 16px;
             border-radius: 8px;
-            width: 340px;
+            width: 350px;
             max-width: 95%;
         }
 
@@ -266,41 +274,82 @@
             padding: 6px;
             border-radius: 4px;
             margin-top: 4px;
-            font-size: 0.78em;
+            font-size: 0.8em;
         }
 
         .radio-group { display: flex; gap: 6px; margin-top: 2px; }
-        .radio-group label { font-weight: normal; font-size: 0.8em; cursor: pointer; }
+        .radio-group label { font-weight: normal; font-size: 0.82em; cursor: pointer; }
         .radio-group input { width: auto; }
 
-        .legend { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-        .legend-item { display: flex; align-items: center; gap: 3px; font-size: 0.75em; }
-        .color-box { width: 9px; height: 9px; border-radius: 2px; }
+        .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+        .legend-item { display: flex; align-items: center; gap: 3px; font-size: 0.8em; }
+        .color-box { width: 10px; height: 10px; border-radius: 2px; }
 
-        /* Mobile Adjustments */
-        @media (max-width: 800px) {
-            .container { grid-template-columns: 1fr; }
-            .summary-dashboard { grid-template-columns: 1fr; }
-            .day-cell { min-height: 60px; padding: 2px; }
-            .day-header { font-size: 0.7em; padding: 2px 0; }
-            .tag { font-size: 0.7em; padding: 1px 2px; }
-            .day-number { font-size: 0.8em; }
+        /* Mobile View Structure: Month Picker -> Calendar -> Summary -> Settings */
+        @media (max-width: 850px) {
+            .container {
+                display: flex;
+                flex-direction: column;
+            }
+            .summary-dashboard {
+                grid-template-columns: 1fr;
+            }
+            .day-cell {
+                min-height: 70px;
+                padding: 2px;
+            }
+            .day-header {
+                font-size: 0.8em;
+                padding: 4px 0;
+            }
+            .tag {
+                font-size: 0.78em;
+                padding: 2px;
+            }
+            .day-number {
+                font-size: 0.88em;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>ניהול סדר יום וחוגים</h1>
-        <div class="calendar-controls">
-            <label>חודש:</label>
-            <select id="monthSelect" onchange="renderCalendar()"></select>
-            <label>שנה:</label>
-            <input type="number" id="yearSelect" value="2026" min="2024" max="2030" style="width: 65px;" onchange="renderCalendar()">
-        </div>
-    </header>
+    <!-- Main Area: Header -> Calendar -> Summary -->
+    <div class="main-content">
+        <header>
+            <h1>ניהול סדר יום וחוגים</h1>
+            <div class="calendar-controls">
+                <label>חודש:</label>
+                <select id="monthSelect" onchange="renderCalendar()"></select>
+                <label>שנה:</label>
+                <input type="number" id="yearSelect" value="2026" min="2024" max="2030" style="width: 70px;" onchange="renderCalendar()">
+            </div>
+        </header>
 
+        <!-- Main Calendar Grid -->
+        <div class="card">
+            <div class="calendar-grid">
+                <div class="day-header">א'</div><div class="day-header">ב'</div><div class="day-header">ג'</div>
+                <div class="day-header">ד'</div><div class="day-header">ה'</div><div class="day-header">ו'</div><div class="day-header">ש'</div>
+            </div>
+            <div class="calendar-grid" id="calendarBody"></div>
+        </div>
+
+        <!-- Summary Dashboard -->
+        <div class="summary-dashboard">
+            <div>
+                <h3>תמונת מצב ועלויות לפי מיקום לחודש</h3>
+                <div id="locationsSummaryGrid" class="locations-summary-grid"></div>
+            </div>
+            <div class="total-box">
+                <div>סה"כ לתשלום:</div>
+                <div id="totalCost" class="total-box-amount">0 ₪</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar / Settings Area -->
     <div class="sidebar">
         <div class="card">
             <div class="sidebar-tabs">
@@ -367,27 +416,6 @@
         <div class="card">
             <label>מקרא מיקומים:</label><div id="locationLegend" class="legend"></div>
             <label style="margin-top:6px;">מקרא מטפלים:</label><div id="caregiverLegend" class="legend"></div>
-        </div>
-    </div>
-
-    <div>
-        <div class="summary-dashboard">
-            <div>
-                <h3>תמונת מצב ועלויות לפי מיקום</h3>
-                <div id="locationsSummaryGrid" class="locations-summary-grid"></div>
-            </div>
-            <div class="total-box">
-                <div>סה"כ לתשלום בחודש:</div>
-                <div id="totalCost" class="total-box-amount">0 ₪</div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="calendar-grid">
-                <div class="day-header">א'</div><div class="day-header">ב'</div><div class="day-header">ג'</div>
-                <div class="day-header">ד'</div><div class="day-header">ה'</div><div class="day-header">ו'</div><div class="day-header">ש'</div>
-            </div>
-            <div class="calendar-grid" id="calendarBody"></div>
         </div>
     </div>
 </div>
@@ -733,7 +761,7 @@
         var locNames = Object.keys(locs);
 
         if (locNames.length === 0) {
-            grid.innerHTML = '<span style="color:#777; font-size:0.85em;">אין חוגים משובצים.</span>';
+            grid.innerHTML = '<span style="color:#777; font-size:0.85em;">אין חוגים משובצים בחודש זה.</span>';
         }
 
         locNames.forEach(function(loc) {
@@ -800,7 +828,6 @@
             return;
         }
 
-        // Clean formatting artifacts
         var cleanTxt = rawInput.trim().replace(/[\r\n\t]/g, '');
 
         try {
