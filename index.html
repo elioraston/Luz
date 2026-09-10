@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ניהול סדר יום וחוגים</title>
+    
+    <!-- אייקון התמונה המותאם אישית -->
+    <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1_T3_Xg_placeholder_image">
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1_T3_Xg_placeholder_image">
+
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -200,7 +205,6 @@
         }
         .weekend-toggle input { width: auto; cursor: pointer; }
 
-        /* Calendar Grid Dynamic Columns */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -239,7 +243,6 @@
 
         .day-content { font-size: 0.8em; display: flex; flex-direction: column; gap: 2px; }
 
-        /* Formatting for No-Wrap / Line Rules */
         .tag {
             padding: 2px 4px;
             border-radius: 3px;
@@ -250,13 +253,11 @@
             word-break: normal;
         }
 
-        /* Keep main name strictly on 1 line */
         .no-wrap-title {
             white-space: nowrap;
             display: inline-block;
         }
 
-        /* Location in parentheses below */
         .location-sub {
             display: block;
             font-size: 0.88em;
@@ -520,7 +521,6 @@
     }
 
     function getColorForCaregiver(cg) {
-        // High contrast gold for מטפלת / כליל
         if (cg.includes('מטפלת') || cg.includes('כליל')) {
             return '#d4a017';
         }
@@ -663,10 +663,9 @@
 
         grid.innerHTML = '';
         var firstDayObj = new Date(year, month, 1);
-        var firstDayOfWeek = firstDayObj.getDay(); // 0 = Sun, 5 = Fri, 6 = Sat
+        var firstDayOfWeek = firstDayObj.getDay();
         var daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        // Calculate leading empty cells
         var emptyCount = 0;
         if (showWeekend) {
             emptyCount = firstDayOfWeek;
@@ -687,7 +686,6 @@
                 var dateObj = new Date(year, month, d);
                 var dayOfWeek = dateObj.getDay();
 
-                // Skip Friday and Saturday if weekend toggle is off
                 if (!showWeekend && (dayOfWeek === 5 || dayOfWeek === 6)) {
                     return;
                 }
