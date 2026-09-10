@@ -23,27 +23,26 @@
             color: var(--text-color);
             margin: 0;
             padding: 8px;
-            font-size: 15px;
+            font-size: 14px;
         }
 
-        /* Desktop Layout (Main Calendar on Left/Top, Sidebar on Right) */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 320px;
-            gap: 12px;
+            gap: 10px;
         }
 
         .main-content {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         header {
             background: var(--card-bg);
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
             display: flex;
@@ -53,14 +52,14 @@
             gap: 8px;
         }
 
-        h1 { margin: 0; font-size: 1.25em; }
-        h3 { margin: 0 0 6px 0; font-size: 1.05em; }
+        h1 { margin: 0; font-size: 1.15em; }
+        h3 { margin: 0 0 4px 0; font-size: 0.95em; }
 
         .sidebar { display: flex; flex-direction: column; gap: 10px; }
 
         .card {
             background: var(--card-bg);
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
@@ -93,21 +92,21 @@
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
-        .form-group { margin-bottom: 8px; }
+        .form-group { margin-bottom: 6px; }
 
         label {
             display: block;
-            font-size: 0.85em;
+            font-size: 0.8em;
             margin-bottom: 2px;
             font-weight: bold;
         }
 
         input, select, textarea, button {
             width: 100%;
-            padding: 8px;
+            padding: 7px;
             border: 1px solid var(--border-color);
             border-radius: 5px;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
 
         button {
@@ -126,7 +125,7 @@
             list-style: none;
             padding: 0;
             margin: 6px 0 0 0;
-            max-height: 140px;
+            max-height: 120px;
             overflow-y: auto;
             border-top: 1px solid var(--border-color);
         }
@@ -135,7 +134,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5px 0;
+            padding: 4px 0;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.85em;
         }
@@ -145,12 +144,12 @@
 
         .summary-dashboard {
             background: var(--card-bg);
-            padding: 12px;
+            padding: 8px 12px;
             border-radius: 8px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
             display: grid;
-            grid-template-columns: 1fr 200px;
-            gap: 10px;
+            grid-template-columns: 1fr 170px;
+            gap: 8px;
             align-items: center;
         }
 
@@ -159,10 +158,10 @@
         .location-card {
             background: #f8f9fa;
             border-right: 4px solid var(--primary-color);
-            padding: 6px 8px;
+            padding: 4px 8px;
             border-radius: 4px;
-            min-width: 130px;
-            font-size: 0.88em;
+            min-width: 120px;
+            font-size: 0.85em;
         }
 
         .location-card-title {
@@ -173,33 +172,51 @@
             gap: 4px;
         }
 
-        .location-card-detail { font-size: 0.82em; color: #444; }
+        .location-card-detail { font-size: 0.8em; color: #444; }
 
         .total-box {
             background: #eef7ee;
             border: 1px solid #c8e6c9;
-            padding: 10px;
+            padding: 6px;
             border-radius: 6px;
             text-align: center;
         }
 
-        .total-box-amount { font-size: 1.4em; font-weight: bold; color: #1b5e20; }
+        .total-box-amount { font-size: 1.25em; font-weight: bold; color: #1b5e20; }
 
-        .calendar-controls { display: flex; align-items: center; gap: 6px; font-weight: bold; }
-        .calendar-controls select, .calendar-controls input { width: auto; padding: 6px; font-size: 0.95em; }
+        .calendar-controls { display: flex; align-items: center; gap: 6px; font-weight: bold; font-size: 0.9em; }
+        .calendar-controls select, .calendar-controls input { width: auto; padding: 4px 6px; font-size: 0.9em; }
 
+        .weekend-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85em;
+            cursor: pointer;
+            user-select: none;
+            background: #eef2f5;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+        .weekend-toggle input { width: auto; cursor: pointer; }
+
+        /* Calendar Grid Dynamic Columns */
         .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 3px;
-            margin-top: 4px;
+            margin-top: 2px;
             width: 100%;
+        }
+
+        .calendar-grid.show-weekend {
+            grid-template-columns: repeat(7, 1fr);
         }
 
         .day-header {
             text-align: center;
             font-weight: bold;
-            padding: 6px 1px;
+            padding: 4px 1px;
             background: #eef2f5;
             border-radius: 4px;
             font-size: 0.85em;
@@ -209,30 +226,42 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 5px;
-            min-height: 85px;
-            padding: 4px;
+            min-height: 72px;
+            padding: 3px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
-            word-wrap: break-word;
             overflow: hidden;
         }
 
-        .day-number { font-weight: bold; font-size: 0.95em; margin-bottom: 2px; }
+        .day-number { font-weight: bold; font-size: 0.9em; margin-bottom: 2px; }
 
-        .day-content { font-size: 0.82em; display: flex; flex-direction: column; gap: 3px; }
+        .day-content { font-size: 0.8em; display: flex; flex-direction: column; gap: 2px; }
 
-        /* Multiline tags so full text shows nicely */
+        /* Formatting for No-Wrap / Line Rules */
         .tag {
             padding: 2px 4px;
             border-radius: 3px;
             color: #fff;
             font-weight: 500;
-            font-size: 0.82em;
-            white-space: normal;
-            line-height: 1.2;
-            word-break: break-word;
+            font-size: 0.8em;
+            line-height: 1.25;
+            word-break: normal;
+        }
+
+        /* Keep main name strictly on 1 line */
+        .no-wrap-title {
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        /* Location in parentheses below */
+        .location-sub {
+            display: block;
+            font-size: 0.88em;
+            opacity: 0.95;
+            white-space: nowrap;
         }
 
         .tag-holiday {
@@ -245,9 +274,10 @@
         .note-text {
             color: #555;
             font-style: italic;
-            font-size: 0.8em;
-            white-space: normal;
-            line-height: 1.1;
+            font-size: 0.78em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .modal {
@@ -285,7 +315,6 @@
         .legend-item { display: flex; align-items: center; gap: 3px; font-size: 0.8em; }
         .color-box { width: 10px; height: 10px; border-radius: 2px; }
 
-        /* Mobile View Structure: Month Picker -> Calendar -> Summary -> Settings */
         @media (max-width: 850px) {
             .container {
                 display: flex;
@@ -295,19 +324,12 @@
                 grid-template-columns: 1fr;
             }
             .day-cell {
-                min-height: 70px;
+                min-height: 65px;
                 padding: 2px;
             }
             .day-header {
                 font-size: 0.8em;
-                padding: 4px 0;
-            }
-            .tag {
-                font-size: 0.78em;
-                padding: 2px;
-            }
-            .day-number {
-                font-size: 0.88em;
+                padding: 3px 0;
             }
         }
     </style>
@@ -315,7 +337,6 @@
 <body>
 
 <div class="container">
-    <!-- Main Area: Header -> Calendar -> Summary -->
     <div class="main-content">
         <header>
             <h1>ניהול סדר יום וחוגים</h1>
@@ -323,23 +344,23 @@
                 <label>חודש:</label>
                 <select id="monthSelect" onchange="renderCalendar()"></select>
                 <label>שנה:</label>
-                <input type="number" id="yearSelect" value="2026" min="2024" max="2030" style="width: 70px;" onchange="renderCalendar()">
+                <input type="number" id="yearSelect" value="2026" min="2024" max="2030" style="width: 65px;" onchange="renderCalendar()">
+                
+                <label class="weekend-toggle">
+                    <input type="checkbox" id="showWeekendCb" onchange="renderCalendar()">
+                    <span>שישי-שבת</span>
+                </label>
             </div>
         </header>
 
-        <!-- Main Calendar Grid -->
         <div class="card">
-            <div class="calendar-grid">
-                <div class="day-header">א'</div><div class="day-header">ב'</div><div class="day-header">ג'</div>
-                <div class="day-header">ד'</div><div class="day-header">ה'</div><div class="day-header">ו'</div><div class="day-header">ש'</div>
-            </div>
+            <div class="calendar-grid" id="calendarHeader"></div>
             <div class="calendar-grid" id="calendarBody"></div>
         </div>
 
-        <!-- Summary Dashboard -->
         <div class="summary-dashboard">
             <div>
-                <h3>תמונת מצב ועלויות לפי מיקום לחודש</h3>
+                <h3>תמונת מצב ועלויות לפי מיקום</h3>
                 <div id="locationsSummaryGrid" class="locations-summary-grid"></div>
             </div>
             <div class="total-box">
@@ -349,7 +370,6 @@
         </div>
     </div>
 
-    <!-- Sidebar / Settings Area -->
     <div class="sidebar">
         <div class="card">
             <div class="sidebar-tabs">
@@ -420,8 +440,8 @@
     </div>
 </div>
 
-<div class="modal" id="dayModal">
-    <div class="modal-content">
+<div class="modal" id="dayModal" onclick="checkModalBackdropClick(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
         <h3 id="modalDateTitle">עריכת יום</h3>
         <div class="form-group">
             <label>דמות מטפלת:</label>
@@ -459,8 +479,8 @@
 <script>
     var jewishHolidaysMap = {
         "2025-03-13": "ערב פורים", "2025-03-14": "פורים", "2025-03-15": "שושן פורים",
-        "2025-04-12": "ערב פסח", "2025-04-13": "פסח", "2025-04-14": "חול המועד", "2025-04-15": "חול המועד",
-        "2025-04-16": "חול המועד", "2025-04-17": "חול המועד", "2025-04-18": "ערב חג", "2025-04-19": "שביעי של פסח",
+        "2025-04-12": "ערב פסח", "2025-04-13": "פסח", "2025-04-14": "חוה\"מ", "2025-04-15": "חוה\"מ",
+        "2025-04-16": "חוה\"מ", "2025-04-17": "חוה\"מ", "2025-04-18": "ערב חג", "2025-04-19": "שביעי של פסח",
         "2025-04-24": "יום השואה", "2025-04-29": "יום הזיכרון", "2025-04-30": "עצמאות", "2025-05-16": "ל\"ג בעומר",
         "2025-06-01": "ערב שבועות", "2025-06-02": "שבועות", "2025-09-22": "ערב ר\"ה", "2025-09-23": "ראש השנה א'",
         "2025-09-24": "ראש השנה ב'", "2025-09-25": "צום גדליה", "2025-10-01": "ערב יום כיפור", "2025-10-02": "יום כיפור",
@@ -481,7 +501,7 @@
     var daysHebrewName = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
     var palette = ['#e57373', '#ba68c8', '#64b5f6', '#4db6ac', '#81c784', '#ffd54f', '#ff8a65', '#a1887f', '#009688', '#e91e63', '#9c27b0'];
 
-    var caregivers = JSON.parse(localStorage.getItem('caregivers') || '[{"id":"c1","name":"אמא"},{"id":"c2","name":"אבא"},{"id":"c3","name":"סבתא"},{"id":"c4","name":"מטפלת"}]');
+    var caregivers = JSON.parse(localStorage.getItem('caregivers') || '[{"id":"c1","name":"אמא"},{"id":"c2","name":"אבא"},{"id":"c3","name":"סבתא"},{"id":"c4","name":"מטפלת (כליל)"}]');
     var activities = JSON.parse(localStorage.getItem('activities') || '[{"id":"1","name":"חוג חיות","location":"Sweetnest","pricingType":"monthly_hub","singlePrice":0}]');
     var monthlyData = JSON.parse(localStorage.getItem('monthlyData') || '{}');
     var hubTiers = JSON.parse(localStorage.getItem('hubTiers') || '{"1":300,"2":500,"3":700,"4":850,"5":1000}');
@@ -500,9 +520,13 @@
     }
 
     function getColorForCaregiver(cg) {
+        // High contrast gold for מטפלת / כליל
+        if (cg.includes('מטפלת') || cg.includes('כליל')) {
+            return '#d4a017';
+        }
         if (!caregiverColorMap[cg]) {
             var keys = Object.keys(caregiverColorMap);
-            caregiverColorMap[cg] = palette[(keys.length + 3) % palette.length];
+            caregiverColorMap[cg] = palette[(keys.length + 2) % palette.length];
         }
         return caregiverColorMap[cg];
     }
@@ -622,12 +646,37 @@
     function renderCalendar() {
         var month = parseInt(document.getElementById('monthSelect').value);
         var year = parseInt(document.getElementById('yearSelect').value);
-        var firstDay = new Date(year, month, 1).getDay();
-        var daysInMonth = new Date(year, month + 1, 0).getDate();
-        var grid = document.getElementById('calendarBody');
-        grid.innerHTML = '';
+        var showWeekend = document.getElementById('showWeekendCb').checked;
 
-        for (var i = 0; i < firstDay; i++) {
+        var calendarHeader = document.getElementById('calendarHeader');
+        var grid = document.getElementById('calendarBody');
+
+        if (showWeekend) {
+            calendarHeader.classList.add('show-weekend');
+            grid.classList.add('show-weekend');
+            calendarHeader.innerHTML = '<div class="day-header">א\'</div><div class="day-header">ב\'</div><div class="day-header">ג\'</div><div class="day-header">ד\'</div><div class="day-header">ה\'</div><div class="day-header">ו\'</div><div class="day-header">ש\'</div>';
+        } else {
+            calendarHeader.classList.remove('show-weekend');
+            grid.classList.remove('show-weekend');
+            calendarHeader.innerHTML = '<div class="day-header">א\'</div><div class="day-header">ב\'</div><div class="day-header">ג\'</div><div class="day-header">ד\'</div><div class="day-header">ה\'</div>';
+        }
+
+        grid.innerHTML = '';
+        var firstDayObj = new Date(year, month, 1);
+        var firstDayOfWeek = firstDayObj.getDay(); // 0 = Sun, 5 = Fri, 6 = Sat
+        var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Calculate leading empty cells
+        var emptyCount = 0;
+        if (showWeekend) {
+            emptyCount = firstDayOfWeek;
+        } else {
+            if (firstDayOfWeek < 5) {
+                emptyCount = firstDayOfWeek;
+            }
+        }
+
+        for (var i = 0; i < emptyCount; i++) {
             var emptyCell = document.createElement('div');
             emptyCell.style.background = 'transparent';
             grid.appendChild(emptyCell);
@@ -635,26 +684,43 @@
 
         for (var day = 1; day <= daysInMonth; day++) {
             (function(d) {
+                var dateObj = new Date(year, month, d);
+                var dayOfWeek = dateObj.getDay();
+
+                // Skip Friday and Saturday if weekend toggle is off
+                if (!showWeekend && (dayOfWeek === 5 || dayOfWeek === 6)) {
+                    return;
+                }
+
                 var dateKey = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
                 var dayData = monthlyData[dateKey] || {};
                 var cell = document.createElement('div');
                 cell.className = 'day-cell';
-                var dateObj = new Date(year, month, d);
-                cell.onclick = function() { openModal(dateKey, d, dateObj.getDay()); };
+                cell.onclick = function() { openModal(dateKey, d, dayOfWeek); };
 
                 var html = '<div class="day-number">' + d + '</div><div class="day-content">';
                 if (jewishHolidaysMap[dateKey]) html += '<div class="tag tag-holiday">🍷 ' + jewishHolidaysMap[dateKey] + '</div>';
                 
                 if (dayData.caregiver) {
                     var cgColor = getColorForCaregiver(dayData.caregiver);
-                    html += '<div class="tag" style="background-color:' + cgColor + '">👤 ' + dayData.caregiver + '</div>';
+                    var parts = dayData.caregiver.split(' ');
+                    var firstName = parts[0];
+                    var restName = parts.slice(1).join(' ');
+                    
+                    html += '<div class="tag" style="background-color:' + cgColor + '">' +
+                            '<span class="no-wrap-title">👤 ' + firstName + '</span>' + 
+                            (restName ? ' <span style="font-size:0.88em;">' + restName + '</span>' : '') +
+                            '</div>';
                 }
 
                 if (dayData.activityId) {
                     var act = activities.find(function(a){ return a.id === dayData.activityId; });
                     if (act) {
                         var locColor = getColorForLocation(act.location);
-                        html += '<div class="tag" style="background-color:' + locColor + '">🤸 ' + act.name + ' (' + act.location + ')</div>';
+                        html += '<div class="tag" style="background-color:' + locColor + '">' +
+                                '<span class="no-wrap-title">🤸 ' + act.name + '</span>' +
+                                '<span class="location-sub">(' + act.location + ')</span>' +
+                                '</div>';
                     }
                 }
 
@@ -690,6 +756,12 @@
     }
 
     function closeModal() { document.getElementById('dayModal').style.display = 'none'; }
+
+    function checkModalBackdropClick(event) {
+        if (event.target.id === 'dayModal') {
+            closeModal();
+        }
+    }
 
     function saveDayData() {
         if (!selectedDateKey) return;
@@ -761,7 +833,7 @@
         var locNames = Object.keys(locs);
 
         if (locNames.length === 0) {
-            grid.innerHTML = '<span style="color:#777; font-size:0.85em;">אין חוגים משובצים בחודש זה.</span>';
+            grid.innerHTML = '<span style="color:#777; font-size:0.85em;">אין חוגים משובצים.</span>';
         }
 
         locNames.forEach(function(loc) {
@@ -801,7 +873,7 @@
         Object.keys(caregiverColorMap).forEach(function(cg){
             var div = document.createElement('div');
             div.className = 'legend-item';
-            div.innerHTML = '<div class="color-box" style="background:' + caregiverColorMap[cg] + '"></div><span>' + cg + '</span>';
+            div.innerHTML = '<div class="color-box" style="background:' + getColorForCaregiver(cg) + '"></div><span>' + cg + '</span>';
             cgLeg.appendChild(div);
         });
     }
